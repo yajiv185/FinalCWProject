@@ -1,0 +1,40 @@
+.CarsImage
+{
+	display:inline-block;
+	width:30%;
+	height: 200px;
+	list-style-type:none;
+	padding-left:25px;
+	border: 1px solid rgb(220,220,220);
+	margin-left:5%;
+	vertical-align:top;
+	
+}
+
+.cars li div
+{
+	display:inline-block;
+	width:30%;
+	margin:10px 10px;
+	list-style-type:none;
+	padding:15px;
+	border: 1px solid rgb(220,220,220);
+	margin-left:10px;
+	vertical-align:top;
+	
+}
+.cars
+{
+	list-style-type:none;
+}
+.carDetail
+{
+	display:inline-block;
+	margin:10px 10px;
+	border: 1px solid rgb(220,220,220);
+}
+.pageButton
+{
+	margin-left:40%;
+	margin-right:20px;
+}

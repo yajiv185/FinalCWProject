@@ -1,0 +1,59 @@
+﻿
+@model DTOs.ProfilePage
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/CSS/carDetail.css">
+    <title>GET</title>
+</head>
+<body>
+    <div class="carDetails">
+        <h2>
+            <table>
+                <tr>
+                    <td>
+                        @Model.CarProfile.carcompany
+                    </td>
+                    <td>
+                        @Model.CarProfile.modelname
+                    </td>
+                    <td>
+                        @Model.CarProfile.carversionname
+                    </td>
+                </tr>
+            </table>
+        </h2>
+    </div>
+    <div class="slideshow-container">
+        <div class="carImages">
+            <img id="image" src="~/CarImages/@Model.CarProfile.ID/large_1.jpg" value="1" count="@Model.ImageCount" image_id="@Model.CarProfile.ID">
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+    </div>
+    <div class="carDetails">
+        <ul>
+            <li>Price: @Model.CarProfile.Price</li>
+            <li>Year: @Model.CarProfile.Year</li>
+            <li>Kilometer:@Model.CarProfile.Kilometers</li>
+            <li>Fuel Type: @Model.CarProfile.FuelType</li>
+            <li>Car Available At: @Model.CarProfile.City</li>
+            <li>Color: @Model.CarProfile.Color</li>
+            @if (Model.CarProfile.FuelEconomy != 0) { 
+            <li>Fuel Economy: @Model.CarProfile.FuelEconomy</li>
+            }
+        </ul>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/CarDetailJS.js"></script>
+
+</body>
+</html>
