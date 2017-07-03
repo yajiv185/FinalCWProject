@@ -1,4 +1,12 @@
-﻿function plusSlides(number)
+﻿$(document).ready(function () {
+    var count = parseInt($("#image").attr("count"));
+    if (count <= 1) {
+        $("#nextImg").hide();
+        $("#previousImg").hide();
+    }
+});
+
+function plusSlides(number)
 {
 
     $(document).ready(function(){

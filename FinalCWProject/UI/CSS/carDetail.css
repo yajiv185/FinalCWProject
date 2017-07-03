@@ -1,7 +1,6 @@
 ﻿.carDetails
 {
-
-margin-left:40%;
+margin-left:45%;
 }
 .slideshow-container
 {
@@ -11,9 +10,6 @@ position: relative;
 }
 .carImages
 {
-
-margin-left:20%;
-
 display:inline-block;
 position: relative;
 
@@ -23,7 +19,7 @@ position: relative;
  position: absolute;
  top: 50%;
  width: auto;
- 
+ background-color:#C8BEBC;
  padding: 16px;
  color: white;
  font-weight: bold;
@@ -39,7 +35,12 @@ left:0%;
  right: 0%;
  border-radius: 3px 0 0 3px;
 }
-#image
+.carDetailsHeading
 {
-
+    display:inline-block;
+   text-align:center;
+}
+.carDetails ul li
+{
+    display:inline-block;
 }

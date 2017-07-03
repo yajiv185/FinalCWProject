@@ -3,16 +3,20 @@ var minPrice;
 var maxPrice;
 
 $(document).ready(function () {
-    var page = 0;
-    city = $("#cities option:selected").val().toLowerCase();
-    minPrice = ($("#minPrice").val());
-    maxPrice = ($("#maxPrice").val());
-    if (page == 0) {
-        $("#previousButton").hide();
+    ReadFilterValue();
+    if (CheckBudget(minPrice, maxPrice)) {
+        var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
+        $("#showCars").load(path);
+    }
+    else {
+        minPrice = "";
+        maxPrice = "";
+        var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
+        $("#showCars").load(path);
     }
 
     $('.cityFilter').change(function () {
-        city = $("#cities option:selected").text().toLowerCase();
+        ReadFilterValue();
         var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
         $.ajax(path).done(function (response) {
             console.log(response);
@@ -22,33 +26,44 @@ $(document).ready(function () {
 
 
     $("#filterByBudgetButton").click(function () {
-        //alert(minPrice);
-        if ($("#minPrice").val() == "") {
-            minPrice = "";
-            maxPrice = "";
+        ReadFilterValue();
+        if (minPrice == "") {
             var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
             $("#showCars").load(path);
         }
         else {
-            minPrice = parseInt($("#minPrice").val());
-            maxPrice = parseInt($("#maxPrice").val());
+            var minValue = parseInt(minPrice);
+            var maxValue = parseInt(maxPrice);
 
-
-            if ((minPrice > 0 && maxPrice > 0 && minPrice <= maxPrice)) {
-
+            if (CheckBudget(minValue, maxValue)) {
                 var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
                 $("#showCars").load(path);
             }
-                //else if (minPrice == NaN) {
-                //    alert("1 1 1");
-                //}
             else {
-                alert("Enter Correct value");
+                alert("Enter Value between 10k to 5cr");
+                $("#minPrice").val(null);
+                $("#maxPrice").val(null);
             }
         }
     });
 
 });
+
+function ReadFilterValue() {
+    minPrice = $("#minPrice").val();
+    maxPrice = $("#maxPrice").val();
+    city = $("#cities option:selected").text().toLowerCase();
+}
+
+function CheckBudget(minValue, maxValue) {
+    if ((minValue > 10000 && minValue <= maxValue && maxValue < 50000000)) {
+
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
 
 function ChangePage(buttonPress) {
     $(document).ready(function () {
@@ -64,7 +79,12 @@ function ChangePage(buttonPress) {
 
 function ProfilePage(stockID) {
     $(document).ready(function () {
-        var url = "/Home/stock/" + stockID + "";
+        var currentUrl = window.location.href;
+        var url;
+        if (currentUrl.search("Home") != -1)
+            url = currentUrl+"/stock/" + stockID + "";
+        else
+            url = "/Home/stock/" + stockID + "";
         $(location).attr('href', url);
     });
 }

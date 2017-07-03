@@ -26,8 +26,8 @@ public class Produce
         using (var connection = factory.CreateConnection())
         using (var channel = connection.CreateModel())
         {
-            channel.QueueDeclare(queue: "stockimage_g3",
-                                 durable: false,
+            channel.QueueDeclare(queue: "stockimage_g3_2",
+                                 durable: true,
                                  exclusive: false,
                                  autoDelete: false,
                                  arguments: null);
@@ -39,7 +39,7 @@ public class Produce
                 nvc.Add(id, imgUrl);
                 byte[] bytenvc = ObjectToByteArray(nvc);
                 channel.BasicPublish(exchange: "",
-                                   routingKey: "stockimage_g3",
+                                   routingKey: "stockimage_g3_2",
                                    basicProperties: null,
                                    body: bytenvc);
             }

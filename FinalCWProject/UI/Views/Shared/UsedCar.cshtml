@@ -15,7 +15,7 @@
                 <li  >
                     <img class="CarsImage" src="~/CarImages/@item.ID/small_1.jpg" alt="@item.carcompany" onclick="ProfilePage(@item.ID)">
                     <div class="stockDetail" onclick="ProfilePage(@item.ID)">
-                        <p class=carDetail><a href="./Home/stock/@item.ID/">@item.carcompany</a></p>
+                        <p class=carDetail><a href="~/Home/stock/@item.ID/">@item.carcompany</a></p>
                         <p class=carDetail>@item.modelname</p>
                         <p class=carDetail>@item.carversionname</p><br />
                         <p class=carDetail>&#8377; @string.Format("{0}", item.Price)</p>

@@ -14,7 +14,7 @@ namespace UI.Controllers
     {
         ElasticSearchClient getAllCars = new ElasticSearchClient();
         SearchResultDTO resultsUsedCar = new SearchResultDTO();
-
+        
         public ActionResult Index()
         {
             resultsUsedCar.ResultList = getAllCars.GetAllStocks(0, resultsUsedCar.PageSize + 1);

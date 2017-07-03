@@ -19,7 +19,7 @@
         <p id="filterByLocation">
             Filter By Location <span>
             <select class="cityFilter" id="cities">
-                <option>Select</option>
+                <option value="0">Select</option>
                 @foreach (var item in Model.ResultCityList)
                 {
                     <option value="@item.ID">@item.CityName</option>

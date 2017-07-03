@@ -98,7 +98,6 @@ namespace DAL
             return _cities;
         }
 
-
         public IEnumerable<ESGetDetail> GetAllStockDetail()
         {
             IEnumerable<ESGetDetail> stockDetail;
