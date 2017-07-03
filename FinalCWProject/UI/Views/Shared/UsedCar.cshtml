@@ -12,9 +12,9 @@
         <ul class="cars">
             @foreach (var item in Model.ResultList.Take(Model.PageSize))
             {
-                <li onclick="ProfilePage(@item.ID)" >
-                    <img class="CarsImage" src="~/CarImages/@item.ID/small_1.jpg" alt="@item.carcompany">
-                    <div class="stockDetail">
+                <li  >
+                    <img class="CarsImage" src="~/CarImages/@item.ID/small_1.jpg" alt="@item.carcompany" onclick="ProfilePage(@item.ID)">
+                    <div class="stockDetail" onclick="ProfilePage(@item.ID)">
                         <p class=carDetail><a href="./Home/stock/@item.ID/">@item.carcompany</a></p>
                         <p class=carDetail>@item.modelname</p>
                         <p class=carDetail>@item.carversionname</p><br />
@@ -29,13 +29,6 @@
         </ul>
     </div>
 
-    @*<div class="pageButton">
-
-                <button class="nextButton" value="@Model.NextPageId" >Next</button>
-
-                <button class="previousButton" value="@Model.PreviousPageId">Previous</button>
-
-        </div>*@
 
     <div class="pageButton">
         @if (Model.PreviousPageId >= 0)

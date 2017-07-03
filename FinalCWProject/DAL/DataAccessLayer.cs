@@ -88,6 +88,16 @@ namespace DAL
 
             return stockDetail;
         }
+        public IEnumerable<Cities> GetCityList()
+        {
+            IEnumerable<Cities> _cities ;
+            using (IDbConnection conn = new MySqlConnection(_connString))
+            {
+                _cities = conn.Query<Cities>("sp_GetCarCities", commandType: CommandType.StoredProcedure);
+            }
+            return _cities;
+        }
+
 
         public IEnumerable<ESGetDetail> GetAllStockDetail()
         {

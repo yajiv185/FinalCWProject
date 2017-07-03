@@ -4,7 +4,7 @@ var maxPrice;
 
 $(document).ready(function () {
     var page = 0;
-    city = $("#cities option:selected").text().toLowerCase();
+    city = $("#cities option:selected").val().toLowerCase();
     minPrice = ($("#minPrice").val());
     maxPrice = ($("#maxPrice").val());
     if (page == 0) {

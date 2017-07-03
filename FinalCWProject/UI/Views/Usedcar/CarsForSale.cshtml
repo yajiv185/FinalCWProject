@@ -18,9 +18,16 @@
     <div id="filter">
         <p id="filterByLocation">
             Filter By Location <span>
-                @Html.DropDownList("cities",new SelectList(Enum.GetValues(typeof(citylist))),
+            <select class="cityFilter" id="cities">
+                <option>Select</option>
+                @foreach (var item in Model.ResultCityList)
+                {
+                    <option value="@item.ID">@item.CityName</option>
+                }
+            </select>
+                @*@Html.DropDownList("cities",new SelectList(Enum.GetValues(typeof(citylist))),
                                                                               "Select",
-                                                                              new { @class = "cityFilter" })
+                                                                              new { @class = "cityFilter" })*@
         </span>
     </p>
     <p id="filterByBudget">

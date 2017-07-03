@@ -87,9 +87,11 @@ namespace Cache
         {
             try
             {
+
                 ElasticSearchClient deleteES = new ElasticSearchClient();
                 deleteES.DeleteESStock(stockId);
                 _dataAccessLayer.DeleteDbStock(stockId);
+
             }
             catch (Exception)
             {
@@ -97,8 +99,30 @@ namespace Cache
             }
             return stockId;
         }
+        public IEnumerable<Entities.Cities> GetCityList()
+        {
+            IEnumerable<Cities> _cities = null;
+            try
+            {
+                string cacheKey = "UsedCar_City_G3";
+                using (MemcachedClient _client = new MemcachedClient("memcached"))
+                {
+                    _cities = (IEnumerable<Cities>)_client.Get(cacheKey);
+                    if (_cities == null)
+                    {
+                        _cities = _dataAccessLayer.GetCityList();
+                        _client.Store(StoreMode.Add, cacheKey, _cities,DateTime.Now.AddMonths(1));
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return _cities;
+        }
 
-        public string CreateKey(int carId)
+        private string CreateKey(int carId)
         {
             return string.Format("UsedCar_{0}", carId);
         }

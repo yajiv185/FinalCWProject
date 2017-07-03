@@ -17,9 +17,8 @@ namespace UI.Controllers
 
         public ActionResult Index()
         {
-            //SyncESwithDatabase s = new SyncESwithDatabase();
-            //s.SyncIndex();
             resultsUsedCar.ResultList = getAllCars.GetAllStocks(0, resultsUsedCar.PageSize + 1);
+            resultsUsedCar.ResultCityList = new CacheLayer().GetCityList();
             if (resultsUsedCar.ResultList.Count() > resultsUsedCar.PageSize)
                 resultsUsedCar.NextPageId = 1;
             return View("~/Views/Usedcar/CarsForSale.cshtml", resultsUsedCar);
@@ -32,7 +31,7 @@ namespace UI.Controllers
         {
             try
             {
-                int pageNo = GetPageNo(page);
+                 int pageNo = GetPageNo(page);
                 if (city != "select")
                 {
                     if (minPrice != "")
@@ -56,7 +55,7 @@ namespace UI.Controllers
             }
             catch
             {
-                return View();
+                return View("~/Views/Usedcar/ErrorPage.cshtml");
             }
         }
 
@@ -75,7 +74,7 @@ namespace UI.Controllers
             }
             catch
             {
-                return View();
+                return View("~/Views/Usedcar/ErrorPage.cshtml");
             }
         }
 

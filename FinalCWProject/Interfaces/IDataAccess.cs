@@ -14,5 +14,6 @@ namespace Interfaces
         void DeleteDbStock(int id);
         ReadStock EditDbStock(int id, T a);
         IEnumerable<ESGetDetail> GetAllStockDetail();
+        IEnumerable<Cities> GetCityList();
     }
 }

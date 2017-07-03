@@ -66,6 +66,8 @@ namespace Services.Controllers
                     return BadRequest("Bad Input");
                 }
                 int stockId = _stockDetails.DeleteStock(id);
+                string imageDirectoryPath = string.Format("S:/FinalCWProject/FinalCWProject/UI/CarImages/{0}/", stockId);
+                Directory.Delete(imageDirectoryPath, true);
                 return Ok("Stock Deleted Successfully");
             }
             catch
