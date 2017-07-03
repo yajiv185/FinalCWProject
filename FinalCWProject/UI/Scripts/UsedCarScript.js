@@ -11,6 +11,8 @@ $(document).ready(function () {
     else {
         minPrice = "";
         maxPrice = "";
+        $("#minPrice").val(null);
+        $("#maxPrice").val(null);
         var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
         $("#showCars").load(path);
     }
@@ -24,28 +26,24 @@ $(document).ready(function () {
         })
     });
 
-
     $("#filterByBudgetButton").click(function () {
         ReadFilterValue();
-        if (minPrice == "") {
-            var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
-            $("#showCars").load(path);
-        }
-        else {
-            var minValue = parseInt(minPrice);
-            var maxValue = parseInt(maxPrice);
+        var minValue = parseInt(minPrice);
+        var maxValue = parseInt(maxPrice);
+            
 
-            if (CheckBudget(minValue, maxValue)) {
-                var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
-                $("#showCars").load(path);
-            }
-            else {
+        if (!CheckBudget(minValue, maxValue)) {
+            if(minPrice!="" && maxPrice!="")
                 alert("Enter Value between 10k to 5cr");
                 $("#minPrice").val(null);
                 $("#maxPrice").val(null);
+                minPrice="";
+                maxPrice="";
             }
+            var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
+            $("#showCars").load(path);
         }
-    });
+    );
 
 });
 
