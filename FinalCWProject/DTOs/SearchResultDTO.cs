@@ -13,6 +13,7 @@ namespace DTOs
         public int PreviousPageId { get; set; }
         public SearchResultDTO()
         {
+            PreviousPageId = -1;
             PageSize = 2;
         }
     }

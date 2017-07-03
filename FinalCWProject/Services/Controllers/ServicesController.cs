@@ -25,9 +25,9 @@ namespace Services.Controllers
                     return BadRequest("Enter correct values for stock");
                 }
                 int stockId = _stockDetails.CreateStock(stock);
-                string imageDirectoryPath = string.Format("S:/FirstCWProject/UsedCars/Services/CarImages/{0}/", stockId);
+                string imageDirectoryPath = string.Format("S:/FinalCWProject/FinalCWProject/UI/CarImages/{0}/", stockId);
                 Directory.CreateDirectory(Path.GetDirectoryName(imageDirectoryPath));
-                return Ok(stockId);
+                return Ok(string.Format("http://localhost:54284/api/Stock/{0}", stockId));
             }
             catch
             {
@@ -47,7 +47,7 @@ namespace Services.Controllers
                     return BadRequest("Bad Input");
                 }
                 _stockDetails.UpdateStock(stockId, stock);
-                return Ok(stockId);
+                return Ok("Stock Updated Successfully");
             }
             catch
             {
@@ -66,7 +66,7 @@ namespace Services.Controllers
                     return BadRequest("Bad Input");
                 }
                 int stockId = _stockDetails.DeleteStock(id);
-                return Ok(stockId);
+                return Ok("Stock Deleted Successfully");
             }
             catch
             {

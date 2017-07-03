@@ -1,5 +1,4 @@
-﻿
-@*@model IEnumerable<Entities.ESGetDetail>*@
+﻿@*@model IEnumerable<Entities.ESGetDetail>*@
 @model DTOs.SearchResultDTO
 @using UsedCarUI.Models
 @{
@@ -7,49 +6,51 @@
 }
 
 
+@if (Model.ResultList.Count() != 0)
+{
     <div class="showCarsdetails">
         <ul class="cars">
-@foreach (var item in Model.ResultList.Take(Model.PageSize))
-{
-            <li>
-                <img class="CarsImage" src="~/CarImages/@item.ID/small_1.jpg">
-                <div>
-                    <p class=carDetail><a href="./Home/stock/@item.ID/">@item.carcompany</a></p>
-                    <p class=carDetail>@item.modelname</p>
-                    <p class=carDetail>@item.carversionname</p><br />
-                    <p class=carDetail>@string.Format("{0}", item.Price)</p>
-                    <p class=carDetail>@item.City</p><br />
-                    <p class=carDetail>@string.Format("{0}", item.Kilometers)</p>
-                    <p class=carDetail>@item.FuelType</p>
-                    <p class=carDetail>@string.Format("{0}", item.Year)</p>
-                </div>
-            </li>
-}
+            @foreach (var item in Model.ResultList.Take(Model.PageSize))
+            {
+                <li onclick="ProfilePage(@item.ID)" >
+                    <img class="CarsImage" src="~/CarImages/@item.ID/small_1.jpg" alt="@item.carcompany">
+                    <div class="stockDetail">
+                        <p class=carDetail><a href="./Home/stock/@item.ID/">@item.carcompany</a></p>
+                        <p class=carDetail>@item.modelname</p>
+                        <p class=carDetail>@item.carversionname</p><br />
+                        <p class=carDetail>&#8377; @string.Format("{0}", item.Price)</p>
+                        <p class=carDetail>@item.City</p><br />
+                        <p class=carDetail>@string.Format("{0} Km", item.Kilometers)</p>
+                        <p class=carDetail>@item.FuelType</p>
+                        <p class=carDetail>@string.Format("{0}", item.Year)</p>
+                    </div>
+                </li>
+            }
         </ul>
     </div>
 
-@*<div class="pageButton">
-    
-        <button class="nextButton" value="@Model.NextPageId" >Next</button>
-    
-        <button class="previousButton" value="@Model.PreviousPageId">Previous</button>
-    
-</div>*@
+    @*<div class="pageButton">
 
-<div class="pageButton">
-    @if (Model.PreviousPageId >= 0)
-    {
-        <button id="previousButton1" value=@Model.PreviousPageId onclick="previousPage()">Previous</button>
-    }
-    @if (Model.ResultList.Count() >  Model.PageSize)
-    {
-        <button id="nextButton1" value="@Model.NextPageId" onclick ="nextPage()">Next</button>
-    }
-</div>
+                <button class="nextButton" value="@Model.NextPageId" >Next</button>
+
+                <button class="previousButton" value="@Model.PreviousPageId">Previous</button>
+
+        </div>*@
+
+    <div class="pageButton">
+        @if (Model.PreviousPageId >= 0)
+        {
+            <button id="previousButton1" value=@Model.PreviousPageId onclick="ChangePage(-1)">Previous</button>
+        }
+        @if (Model.ResultList.Count() > Model.PageSize)
+        {
+            <button id="nextButton1" value="@Model.NextPageId" onclick="ChangePage(1)">Next</button>
+        }
+    </div>
 
 
-
-@*<div>
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }));
-</div>*@
-
+}
+else
+{
+    <center><h2>Sorry, no cars found matching your criteria. :(</h2></center>
+}
