@@ -166,8 +166,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\UsedCar.cshtml" />
     <Content Include="Views\Usedcar\CarsForSale.cshtml" />
     <Content Include="Views\Usedcar\GET.cshtml" />

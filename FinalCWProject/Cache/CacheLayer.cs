@@ -87,11 +87,9 @@ namespace Cache
         {
             try
             {
-
                 ElasticSearchClient deleteES = new ElasticSearchClient();
                 deleteES.DeleteESStock(stockId);
                 _dataAccessLayer.DeleteDbStock(stockId);
-
             }
             catch (Exception)
             {

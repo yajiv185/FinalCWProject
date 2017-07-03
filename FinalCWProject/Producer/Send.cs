@@ -20,7 +20,7 @@ public class Produce
         }
     }
 
-    public void sender(int stockId, string imgUrl)
+    public void Sender(int stockId, string imgUrl)
     {
         var factory = new ConnectionFactory() { HostName = "172.16.0.11" };
         using (var connection = factory.CreateConnection())
@@ -32,17 +32,14 @@ public class Produce
                                  autoDelete: false,
                                  arguments: null);
 
-            for (int i = 0; i < 1; i++)
-            {
-                NameValueCollection nvc = new NameValueCollection();
-                string id = stockId.ToString();
-                nvc.Add(id, imgUrl);
-                byte[] bytenvc = ObjectToByteArray(nvc);
-                channel.BasicPublish(exchange: "",
-                                   routingKey: "stockimage_g3_2",
-                                   basicProperties: null,
-                                   body: bytenvc);
-            }
+            NameValueCollection nvc = new NameValueCollection();
+            string id = stockId.ToString();
+            nvc.Add(id, imgUrl);
+            byte[] bytenvc = ObjectToByteArray(nvc);
+            channel.BasicPublish(exchange: "",
+                               routingKey: "stockimage_g3_2",
+                               basicProperties: null,
+                               body: bytenvc);
         }
     }
 }

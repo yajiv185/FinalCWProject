@@ -85,7 +85,7 @@ namespace Services.Controllers
                 if (id > 0 && stockImage.imgUrl != null)
                 {
                     Produce sendobj = new Produce();
-                    sendobj.sender(id, stockImage.imgUrl);
+                    sendobj.Sender(id, stockImage.imgUrl);
                 }
                 return Ok("Your image is uploaded successfully :) ");
             }

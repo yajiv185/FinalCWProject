@@ -1,9 +1,6 @@
 ﻿@*@model IEnumerable<Entities.ESGetDetail>*@
 @model DTOs.SearchResultDTO
 @using UsedCarUI.Models
-@{
-    Layout = null;
-}
 
 
 @if (Model.ResultList.Count() != 0)
@@ -35,9 +32,17 @@
         {
             <button id="previousButton1" value=@Model.PreviousPageId onclick="ChangePage(-1)">Previous</button>
         }
+        else
+        {
+            <button id="previousButton1" value=@Model.PreviousPageId onclick="ChangePage(-1)" style="visibility:hidden">Previous</button>
+        }
         @if (Model.ResultList.Count() > Model.PageSize)
         {
             <button id="nextButton1" value="@Model.NextPageId" onclick="ChangePage(1)">Next</button>
+        }
+        else
+        {
+            <button id="nextButton1" value="@Model.NextPageId" onclick="ChangePage(1)" style="visibility:hidden">Next</button>
         }
     </div>
 

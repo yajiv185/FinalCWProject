@@ -88,17 +88,7 @@ namespace ElasticSearch
                 .Id(stockId)
                 .Index("stockdata_g3_1")
                 .Type("esgetdetail")
-                .Doc(new
-                {
-                    Price = updatedStock.Price,
-                    Year = updatedStock.Year,
-                    Kilometers = updatedStock.Kilometers,
-                    FuelType = updatedStock.FuelType,
-                    City = updatedStock.City,
-                    carcompany = updatedStock.carcompany,
-                    modelname = updatedStock.modelname,
-                    carversionname = updatedStock.carversionname
-                })
+                .Doc(updatedStock)
                 .RetryOnConflict(3)
                 .Refresh()
             );
