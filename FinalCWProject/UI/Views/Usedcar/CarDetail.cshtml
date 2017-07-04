@@ -1,0 +1,64 @@
+﻿@model DTOs.ProfilePage
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/CSS/carDetail.css">
+    <title>CarDetail of @Model.CarProfile.CarCompany @Model.CarProfile.ModelName @Model.CarProfile.CarVersion</title>
+</head>
+<body>
+    <center>
+        <div class="carDetailsHeading">
+            <table>
+                <tr>
+                    <td>
+                        <h2>@Model.CarProfile.CarCompany</h2>
+                    </td>
+                    <td>
+                        <h2> @Model.CarProfile.ModelName</h2>
+                    </td>
+                    <td>
+                        <h2> @Model.CarProfile.CarVersion</h2>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </center>
+    <div class="slideshow-container">
+        <center>
+            <div class="carImages">
+                <img id="image" src="~/CarImages/@Model.CarProfile.ID/large_1.jpg" value="1" count="@Model.CarProfile.ImageCount" image_id="@Model.CarProfile.ID">
+                <a class="prev" onclick="PlusSlides(-1)" id="nextImg">&#10094;</a>
+                <a class="next" onclick="PlusSlides(1)" id="previousImg">&#10095;</a>
+            </div>
+        </center>
+    </div>
+    <div class="carDetails">
+        <ul>
+            <li>Price: &#8377; @Model.CarProfile.Price</li>
+            <br>
+            <li>Year: @Model.CarProfile.Year</li>
+            <br>
+            <li>Kilometer:@Model.CarProfile.Kilometers Km</li>
+            <br>
+            <li>Fuel Type: @Model.CarProfile.FuelType</li>
+            <br>
+            <li>Car Available At: @Model.CarProfile.City</li>
+            <br>
+            <li>Color: @Model.CarProfile.Color</li>
+            <br>
+            @if (Model.CarProfile.FuelEconomy != 0)
+            {
+                <li>Fuel Economy: @Model.CarProfile.FuelEconomy</li>
+            }
+        </ul>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/CarDetailJS.js"></script>
+
+</body>
+</html>

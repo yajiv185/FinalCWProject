@@ -147,7 +147,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CitiesList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -168,7 +167,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\UsedCar.cshtml" />
     <Content Include="Views\Usedcar\CarsForSale.cshtml" />
-    <Content Include="Views\Usedcar\GET.cshtml" />
+    <Content Include="Views\Usedcar\CarDetail.cshtml" />
     <Content Include="Views\Usedcar\Errorpage.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +193,10 @@
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{03726fe5-10f2-45a3-91d1-8d5e54062fd3}</Project>
       <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
+      <Project>{17c598f3-1644-4429-910a-8431754c6382}</Project>
+      <Name>Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Services\Services.csproj">
       <Project>{b8d7bd72-0adb-4756-bdb2-46a947be3267}</Project>

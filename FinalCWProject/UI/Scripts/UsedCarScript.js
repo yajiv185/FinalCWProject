@@ -5,25 +5,25 @@ var maxPrice;
 $(document).ready(function () {
     ReadFilterValue();
     if (CheckBudget(minPrice, maxPrice)) {
-        var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
-        $("#showCars").load(path);
+        LoadPath();
     }
     else {
         minPrice = "";
         maxPrice = "";
         $("#minPrice").val(null);
         $("#maxPrice").val(null);
-        var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
-        $("#showCars").load(path);
+        LoadPath();
     }
 
     $('.cityFilter').change(function () {
         ReadFilterValue();
-        var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
-        $.ajax(path).done(function (response) {
-            console.log(response);
-            $("#showCars").html(response);
-        })
+        if (minPrice == "" || maxPrice == "") {
+            $("#minPrice").val(null);
+            $("#maxPrice").val(null);
+            minPrice = "";
+            maxPrice = "";
+        }
+        LoadPath();
     });
 
     $("#filterByBudgetButton").click(function () {
@@ -40,8 +40,7 @@ $(document).ready(function () {
                 minPrice="";
                 maxPrice="";
             }
-            var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
-            $("#showCars").load(path);
+        LoadPath();
         }
     );
 
@@ -54,17 +53,16 @@ function ReadFilterValue() {
 }
 
 function CheckBudget(minValue, maxValue) {
-    if ((minValue > 10000 && minValue <= maxValue && maxValue < 50000000)) {
+    return (minValue > 10000 && minValue <= maxValue && maxValue < 50000000)
+}
 
-        return 1;
-    }
-    else {
-        return 0;
-    }
+function LoadPath()
+{
+    var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "";
+    $("#showCars").load(path);
 }
 
 function ChangePage(buttonPress) {
-    $(document).ready(function () {
         var page;
         if (buttonPress == -1)
             page = $("#previousButton1").attr("value");
@@ -72,17 +70,8 @@ function ChangePage(buttonPress) {
             page = $("#nextButton1").attr("value");
         var path = "/Home/Filter?city=" + city + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&page=" + page + "";
         $("#showCars").load(path);
-    });
 }
 
 function ProfilePage(stockID) {
-    $(document).ready(function () {
-        var currentUrl = window.location.href;
-        var url;
-        if (currentUrl.search("Home") != -1)
-            url = currentUrl+"/stock/" + stockID + "";
-        else
-            url = "/Home/stock/" + stockID + "";
-        $(location).attr('href', url);
-    });
+    window.location.href = "/Home/stock/" + stockID + "/";
 }

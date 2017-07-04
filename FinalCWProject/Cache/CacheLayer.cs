@@ -6,14 +6,25 @@ using Enyim.Caching;
 using Enyim.Caching.Configuration;
 using Enyim.Caching.Memcached;
 using DAL;
+using Interfaces;
 using Entities;
 using ElasticSearch;
 
 namespace Cache
 {
-    public class CacheLayer
+    public class CacheLayer : ICache
     {
-        private DataAccessLayer _dataAccessLayer = new DataAccessLayer();
+        private IDataAccess _dataAccessLayer;
+        public CacheLayer()
+        { 
+         _dataAccessLayer = new DataAccessLayer();
+        }
+
+     /// <summary>
+     /// 
+     /// </summary>
+     /// <param name="stockId"></param>
+     /// <returns></returns>
         public ReadStock GetStock(int stockId)
         {
             ReadStock carDetails = null;
@@ -30,28 +41,29 @@ namespace Cache
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw e;
             }
             return carDetails;
         }
         public void UpdateStock(int stockId, Stocks stock)
         {
             string cacheKey = CreateKey(stockId);
-            ReadStock getUpdatedData = new ReadStock();
+            ReadStock updatedData = new ReadStock();
             ElasticSearchClient updateES = new ElasticSearchClient();
-            ESGetDetail getUpdatedESData = new ESGetDetail();
+            ESGetDetail updatedESData = new ESGetDetail();
             try
             {
 
-                getUpdatedData = _dataAccessLayer.EditDbStock(stockId, stock);
+                updatedData = _dataAccessLayer.EditDbStock(stockId, stock);
                 using (MemcachedClient client = new MemcachedClient("memcached"))
                 {
-                    client.Store(StoreMode.Set, cacheKey, getUpdatedData, DateTime.Now.AddMinutes(60));
+                    client.Store(StoreMode.Set, cacheKey, updatedData, DateTime.Now.AddMinutes(60));
                 }
-                getUpdatedESData = ConvertCachetoESData(getUpdatedData);
-                updateES.UpdateESStock(stockId, getUpdatedESData);
+                updatedESData = ConvertCachetoESData(updatedData);
+                //getCreatedData = Mapper.Map<ReadStock, ESGetDetail>(getCreatedData);
+                updateES.UpdateESStock(stockId, updatedESData);
             }
             catch (Exception)
             {
@@ -64,18 +76,19 @@ namespace Cache
             int _newStockid = 0;
             try
             {
-                ReadStock getCreatedData = new ReadStock();
-                ESGetDetail getCreatedESData = new ESGetDetail();
+                ReadStock createdData = new ReadStock();
+                ESGetDetail createdESData = new ESGetDetail();
                 ElasticSearchClient createES = new ElasticSearchClient();
-                getCreatedData = _dataAccessLayer.CreateDbStock(stock);
-                string cacheKey = CreateKey(getCreatedData.ID);
+                createdData = _dataAccessLayer.CreateDbStock(stock);
+                string cacheKey = CreateKey(createdData.ID);
                 using (MemcachedClient client = new MemcachedClient("memcached"))
                 {
-                    client.Store(StoreMode.Add, cacheKey, getCreatedData, DateTime.Now.AddMinutes(15));
+                    client.Store(StoreMode.Add, cacheKey, createdData, DateTime.Now.AddMinutes(15));
                 }
-                getCreatedESData = ConvertCachetoESData(getCreatedData);
-                createES.CreateESStock(getCreatedESData);
-                _newStockid = getCreatedESData.ID;
+                createdESData = ConvertCachetoESData(createdData);
+                //getCreatedData = Mapper.Map<ReadStock, ESGetDetail>(getCreatedData);
+                createES.CreateESStock(createdESData);
+                _newStockid = createdESData.ID;
             }
             catch (Exception)
             {
@@ -83,7 +96,7 @@ namespace Cache
             }
             return _newStockid;
         }
-        public int DeleteStock(int stockId)
+        public void DeleteStock(int stockId)
         {
             try
             {
@@ -95,14 +108,14 @@ namespace Cache
             {
                 throw;
             }
-            return stockId;
+           
         }
-        public IEnumerable<Entities.Cities> GetCityList()
+        public IEnumerable<Cities> GetCityList()
         {
             IEnumerable<Cities> _cities = null;
             try
             {
-                string cacheKey = "UsedCar_City_G3";
+                const string cacheKey = "UsedCar_City_G3";
                 using (MemcachedClient _client = new MemcachedClient("memcached"))
                 {
                     _cities = (IEnumerable<Cities>)_client.Get(cacheKey);
@@ -128,15 +141,18 @@ namespace Cache
         private ESGetDetail ConvertCachetoESData(ReadStock getUpdatedData)
         {
             ESGetDetail convertedData = new ESGetDetail();
-            convertedData.carcompany = getUpdatedData.carcompany;
-            convertedData.ID = getUpdatedData.ID;
-            convertedData.Price = getUpdatedData.Price;
-            convertedData.Year = getUpdatedData.Year;
-            convertedData.Kilometers = getUpdatedData.Kilometers;
-            convertedData.FuelType = getUpdatedData.FuelType;
-            convertedData.City = getUpdatedData.City;
-            convertedData.modelname = getUpdatedData.modelname;
-            convertedData.carversionname = getUpdatedData.carversionname;
+            if (getUpdatedData!=null)
+            {
+                convertedData.CarCompany = getUpdatedData.CarCompany;
+                convertedData.ID = getUpdatedData.ID;
+                convertedData.Price = getUpdatedData.Price;
+                convertedData.Year = getUpdatedData.Year;
+                convertedData.Kilometers = getUpdatedData.Kilometers;
+                convertedData.FuelType = getUpdatedData.FuelType;
+                convertedData.City = getUpdatedData.City;
+                convertedData.ModelName = getUpdatedData.ModelName;
+                convertedData.CarVersion = getUpdatedData.CarVersion; 
+            }
             return convertedData;
         }
     }

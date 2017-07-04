@@ -14,6 +14,7 @@ namespace UI.Controllers
     {
         ElasticSearchClient getAllCars = new ElasticSearchClient();
         SearchResultDTO resultsUsedCar = new SearchResultDTO();
+       
         
         public ActionResult Index()
         {
@@ -68,9 +69,9 @@ namespace UI.Controllers
                 ProfilePage displayStock = new ProfilePage();
                 CacheLayer carDetail = new CacheLayer();
                 displayStock.CarProfile = carDetail.GetStock(id);
-                string directoryName = string.Format("S:/FinalCWProject/FinalCWProject/UI/CarImages/{0}/", id);
-                displayStock.ImageCount = (Directory.GetFiles(directoryName).Length) / 3;
-                return View("~/Views/Usedcar/GET.cshtml", displayStock);
+                //string directoryName = string.Format("S:/FinalCWProject/FinalCWProject/UI/CarImages/{0}/", id);
+                //displayStock.ImageCount = (Directory.GetFiles(directoryName).Length) / 3;
+                return View("~/Views/Usedcar/CarDetail.cshtml", displayStock);
             }
             catch
             {

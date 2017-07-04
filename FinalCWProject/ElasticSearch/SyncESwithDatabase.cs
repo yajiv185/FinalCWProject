@@ -26,7 +26,7 @@ namespace ElasticSearch
         }
         public void SyncIndex()
         {
-            IDataAccess<Stocks> data = new DataAccessLayer();
+            IDataAccess data = new DataAccessLayer();
 
             IEnumerable<ESGetDetail> allStockData = data.GetAllStockDetail();
             ElasticClient client = ElasticClientInstance.GetInstance();

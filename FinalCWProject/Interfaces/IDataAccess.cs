@@ -7,12 +7,12 @@ using Entities;
 
 namespace Interfaces
 {
-    public interface IDataAccess<T>
+    public interface IDataAccess
     {
-        ReadStock CreateDbStock(T a);
+        ReadStock CreateDbStock(Stocks a);
         ReadStock ReadDbStock(int id);
         void DeleteDbStock(int id);
-        ReadStock EditDbStock(int id, T a);
+        ReadStock EditDbStock(int id, Stocks a);
         IEnumerable<ESGetDetail> GetAllStockDetail();
         IEnumerable<Cities> GetCityList();
     }

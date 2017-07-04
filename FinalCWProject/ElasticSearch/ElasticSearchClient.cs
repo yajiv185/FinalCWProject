@@ -76,8 +76,6 @@ namespace ElasticSearch
         {
             int id = createdStock.ID;
             _client.Index(createdStock, i => i
-                .Index("stockdata_g3_1")
-                .Type("esgetdetail")
                 .Id(id.ToString())
                      );
         }
@@ -86,8 +84,6 @@ namespace ElasticSearch
         {
             _client.Update<ESGetDetail, object>(u => u
                 .Id(stockId)
-                .Index("stockdata_g3_1")
-                .Type("esgetdetail")
                 .Doc(updatedStock)
                 .RetryOnConflict(3)
                 .Refresh()

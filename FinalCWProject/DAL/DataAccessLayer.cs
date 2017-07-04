@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 namespace DAL
 {
-    public class DataAccessLayer : IDataAccess<Stocks>
+    public class DataAccessLayer : IDataAccess
     {
         private string _connString = ConfigurationManager.ConnectionStrings["DatabaseConncet"].ConnectionString;
         public ReadStock CreateDbStock(Stocks stock)

@@ -37,12 +37,14 @@ namespace Entities
         public float FuelEconomy { get; set; }
         [DataMember]
         [JsonProperty("carcompany")]
-        public string carcompany { get; set; }
+        public string CarCompany { get; set; }
         [DataMember]
         [JsonProperty("modelname")]
-        public string modelname { get; set; }
+        public string ModelName { get; set; }
         [DataMember]
         [JsonProperty("carversionname")]
-        public string carversionname { get; set; }
+        public string CarVersion { get; set; }
+
+        public int ImageCount { get; set; }
     }
 }

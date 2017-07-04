@@ -8,7 +8,7 @@ using RabbitMqPublishing;
 
 public class Produce
 {
-    byte[] ObjectToByteArray(object obj)
+    private static byte[] ObjectToByteArray(object obj)
     {
         if (obj == null)
             return null;
@@ -20,7 +20,7 @@ public class Produce
         }
     }
 
-    public void Sender(int stockId, string imgUrl)
+    public static void Sender(int stockId, string imgUrl)
     {
         var factory = new ConnectionFactory() { HostName = "172.16.0.11" };
         using (var connection = factory.CreateConnection())

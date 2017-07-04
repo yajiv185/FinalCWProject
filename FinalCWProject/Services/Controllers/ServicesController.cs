@@ -7,13 +7,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebApplication1.Models;
+using System.Web;
+using Interfaces;
+using System.Configuration;
 
 namespace Services.Controllers
 {
     public class ServicesController : ApiController
     {
-        private CacheLayer _stockDetails = new CacheLayer();
+        private ICache _stockDetails=new CacheLayer();
         [Route("api/Stock/")]
         [HttpPost]
         public IHttpActionResult CreateStock([FromBody] Stocks stock)
@@ -25,9 +27,13 @@ namespace Services.Controllers
                     return BadRequest("Enter correct values for stock");
                 }
                 int stockId = _stockDetails.CreateStock(stock);
-                string imageDirectoryPath = string.Format("S:/FinalCWProject/FinalCWProject/UI/CarImages/{0}/", stockId);
-                Directory.CreateDirectory(Path.GetDirectoryName(imageDirectoryPath));
-                return Ok(string.Format("http://localhost:54284/api/Stock/{0}", stockId));
+                //string imageDirectoryPath = string.Format("S:/FinalCWProject/FinalCWProject/UI/CarImages/{0}/", stockId);
+                //Directory.CreateDirectory(Path.GetDirectoryName(imageDirectoryPath));
+                string defaultPath = ConfigurationManager.AppSettings["ImageLocation"];
+                string imageDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, defaultPath);
+                string imageDirectoryPath1 = string.Format("{0}{1}\\", imageDirectoryPath, stockId);
+                Directory.CreateDirectory(Path.GetDirectoryName(imageDirectoryPath1));
+                return Ok(string.Format("http://{0}:{1}/api/Stock/{2}",HttpContext.Current.Request.Url.Host,HttpContext.Current.Request.Url.Port, stockId));
             }
             catch
             {
@@ -65,9 +71,11 @@ namespace Services.Controllers
                 {
                     return BadRequest("Bad Input");
                 }
-                int stockId = _stockDetails.DeleteStock(id);
-                string imageDirectoryPath = string.Format("S:/FinalCWProject/FinalCWProject/UI/CarImages/{0}/", stockId);
-                Directory.Delete(imageDirectoryPath, true);
+                _stockDetails.DeleteStock(id);
+                string defaultPath = ConfigurationManager.AppSettings["ImageLocation"];
+                string imageDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, defaultPath);
+                string imageDirectoryPath1 = string.Format("{0}{1}\\", imageDirectoryPath, id);
+                Directory.Delete(imageDirectoryPath1, true);
                 return Ok("Stock Deleted Successfully");
             }
             catch
@@ -78,16 +86,20 @@ namespace Services.Controllers
 
         [Route("api/Stock/{id}/Image/")]
         [HttpPost]
-        public IHttpActionResult GenerateImage(int id, [FromBody]Display stockImage)
+        public IHttpActionResult GenerateImage(int id, [FromBody]string imgUrl)
         {
             try
             {
-                if (id > 0 && stockImage.imgUrl != null)
+                if (id > 0 && imgUrl != null)
                 {
-                    Produce sendobj = new Produce();
-                    sendobj.Sender(id, stockImage.imgUrl);
+                    Produce.Sender(id, imgUrl);
+                    return Ok("Your image is uploaded successfully :) ");
                 }
-                return Ok("Your image is uploaded successfully :) ");
+                else
+                {
+                    return BadRequest("ImageURl or Id is not valid.");
+                }
+                
             }
             catch (Exception)
             {

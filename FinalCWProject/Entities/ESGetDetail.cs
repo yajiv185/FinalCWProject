@@ -19,10 +19,10 @@ namespace Entities
 
         public string City { get; set; }
 
-        public string carcompany { get; set; }
+        public string CarCompany { get; set; }
 
-        public string modelname { get; set; }
+        public string ModelName { get; set; }
 
-        public string carversionname { get; set; }
+        public string CarVersion { get; set; }
     }
 }
