@@ -31,7 +31,7 @@ namespace NewConsumer
 
 
             var param = new DynamicParameters();
-            param.Add("id", id_img, direction: ParameterDirection.Input);
+            param.Add("stockid", id_img, direction: ParameterDirection.Input);
             param.Add("count",dbType:DbType.Int32,direction: ParameterDirection.Output);
 
             try
@@ -48,10 +48,9 @@ namespace NewConsumer
                 throw;
             }
 
-            // countImg = Directory.GetFiles(directoryName).Length;
-             countImg = (countImg / 3);
+            //countImg = (countImg / 3);
 
-            string saveOriginalPath = string.Format("{0}\\original_{1}.jpg", directoryName, countImg);
+            string saveOriginalPath = string.Format("{0}original_{1}.jpg", directoryName, countImg);
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile(@url, @saveOriginalPath);
