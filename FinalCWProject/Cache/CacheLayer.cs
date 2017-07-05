@@ -36,8 +36,17 @@ namespace Cache
                     carDetails = (ReadStock)_client.Get(cacheKey);
                     if (carDetails == null)
                     {
-                        carDetails = _dataAccessLayer.ReadDbStock(stockId);
-                        _client.Store(StoreMode.Add, cacheKey, carDetails, DateTime.Now.AddMinutes(60));
+                        if (_client.Store(StoreMode.Add, cacheKey + "_lock", "lock", DateTime.Now.AddSeconds(30)))
+                        {
+                            carDetails = _dataAccessLayer.ReadDbStock(stockId);
+                            _client.Store(StoreMode.Add, cacheKey, carDetails, DateTime.Now.AddMinutes(15));
+                            _client.Remove(cacheKey + "_lock");
+                        }
+                        else
+                        {
+                            carDetails = _dataAccessLayer.ReadDbStock(stockId);
+                        }
+
                     }
                 }
             }

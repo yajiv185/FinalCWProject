@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using RabbitMqPublishing;
+using System.Configuration;
 
 public class Produce
 {
@@ -22,7 +23,7 @@ public class Produce
 
     public static void Sender(int stockId, string imgUrl)
     {
-        var factory = new ConnectionFactory() { HostName = "172.16.0.11" };
+        var factory = new ConnectionFactory() { HostName = ConfigurationManager.AppSettings["RabbitMQ"] };
         using (var connection = factory.CreateConnection())
         using (var channel = connection.CreateModel())
         {

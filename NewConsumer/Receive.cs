@@ -3,6 +3,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -24,7 +25,7 @@ class Receive
 
     public void Receiver()
     {
-        var factory = new ConnectionFactory() { HostName = "172.16.0.11" };
+        var factory = new ConnectionFactory() { HostName = ConfigurationManager.AppSettings["RabbitMQ"] };
         using (var connection = factory.CreateConnection())
         using (var channel = connection.CreateModel())
         {

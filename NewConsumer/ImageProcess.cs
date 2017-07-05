@@ -1,4 +1,7 @@
 ﻿using Dapper;
+using Entities;
+using Enyim.Caching;
+using Enyim.Caching.Memcached;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -18,8 +21,6 @@ namespace NewConsumer
        
         public void SaveImage(string url , int id_img)
         {
-            int countImg;
-           
             string _connString = ConfigurationManager.ConnectionStrings["DatabaseConncet"].ConnectionString;
 
             string defaultPath = ConfigurationManager.AppSettings["ImageSaveLocation"].ToString();
@@ -32,14 +33,22 @@ namespace NewConsumer
 
             var param = new DynamicParameters();
             param.Add("stockid", id_img, direction: ParameterDirection.Input);
-            param.Add("count",dbType:DbType.Int32,direction: ParameterDirection.Output);
+            ReadStock _stockDetail=new ReadStock();
 
             try
             {
+                
                 using (IDbConnection conn = new MySqlConnection(_connString))
                 {
-                    conn.Query("sp_UsedCarsGetImageCount", param, commandType: CommandType.StoredProcedure);
-                    countImg = param.Get<int>("count");
+                    _stockDetail=conn.Query<ReadStock>("sp_UsedCarsGetImageCount", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                }
+                using (MemcachedClient client = new MemcachedClient("memcached"))
+                {
+                    //client.Remove(string.Format("UsedCar_{0}", id_img));
+                    string cacheKey = string.Format("UsedCar_{0}", _stockDetail.ID);
+                    client.Remove(cacheKey);
+                    client.Store(StoreMode.Add, cacheKey, _stockDetail, DateTime.Now.AddMinutes(1));
+                    ReadStock _stockDetail1 = (ReadStock)client.Get(cacheKey);
                 }
             }
             catch (Exception)
@@ -50,7 +59,7 @@ namespace NewConsumer
 
             //countImg = (countImg / 3);
 
-            string saveOriginalPath = string.Format("{0}original_{1}.jpg", directoryName, countImg);
+            string saveOriginalPath = string.Format("{0}original_{1}.jpg", directoryName, _stockDetail.ImageCount);
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile(@url, @saveOriginalPath);
@@ -60,8 +69,8 @@ namespace NewConsumer
             Bitmap largeImage = StockImages.ResizeImage(bitmap, 640, 348);
 
 
-            string smallImgPath = string.Format("{0}/small_{1}.jpg", directoryName, countImg); ;
-            string largeImgPath = string.Format("{0}/large_{1}.jpg", directoryName, countImg); ;
+            string smallImgPath = string.Format("{0}/small_{1}.jpg", directoryName, _stockDetail.ImageCount); ;
+            string largeImgPath = string.Format("{0}/large_{1}.jpg", directoryName, _stockDetail.ImageCount); ;
 
             smallImage.Save(@smallImgPath, ImageFormat.Jpeg);
             largeImage.Save(@largeImgPath, ImageFormat.Jpeg);
