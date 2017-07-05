@@ -47,8 +47,8 @@ namespace NewConsumer
                     //client.Remove(string.Format("UsedCar_{0}", id_img));
                     string cacheKey = string.Format("UsedCar_{0}", _stockDetail.ID);
                     client.Remove(cacheKey);
-                    client.Store(StoreMode.Add, cacheKey, _stockDetail, DateTime.Now.AddMinutes(1));
-                    ReadStock _stockDetail1 = (ReadStock)client.Get(cacheKey);
+                    //client.Store(StoreMode.Add, cacheKey, _stockDetail, DateTime.Now.AddMinutes(1));
+                    //ReadStock _stockDetail1 = (ReadStock)client.Get(cacheKey);
                 }
             }
             catch (Exception)
